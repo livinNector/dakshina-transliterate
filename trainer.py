@@ -42,6 +42,10 @@ def train(
 
     # Trainer
     wandb_logger = WandbLogger(log_model="all", project=wandb_project, name=run_name)
+    if run_name is None:
+        run_name = (
+            f"c_{cell_type}_e_{embed_dim}_h_{hidden_dim}_n_{n_layers}_d_{dropout}_a_{use_attention}"
+        )
     wandb_logger.experiment.name = run_name + "-" + wandb_logger.experiment.name
 
     checkpoint_callback = ModelCheckpoint(monitor="val_accuracy", mode="max")
