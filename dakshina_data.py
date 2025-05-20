@@ -40,6 +40,8 @@ class CharTokenizer:
         for idx in token_ids:
             char = self.idx2char.get(idx, "")
             if skip_special_tokens and char in self.special_tokens:
+                if char == self.eos_token:
+                    break
                 continue
             chars.append(char)
         return "".join(chars)
@@ -152,7 +154,7 @@ class DakshinaDataModule(pl.LightningDataModule):
     def val_dataloader(self):
         return DataLoader(
             self.val_ds,
-            batch_size=self.batch_size*2,
+            batch_size=self.batch_size * 2,
             num_workers=self.num_workers,
             collate_fn=self.collate_fn,
         )
@@ -160,7 +162,7 @@ class DakshinaDataModule(pl.LightningDataModule):
     def test_dataloader(self):
         return DataLoader(
             self.test_ds,
-            batch_size=self.batch_size*2,
+            batch_size=self.batch_size * 2,
             num_workers=self.num_workers,
             collate_fn=self.collate_fn,
         )
