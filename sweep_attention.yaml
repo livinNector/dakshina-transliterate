@@ -1,0 +1,32 @@
+program: train.py
+name: dakshina-recurrent-attention-sweep
+method: bayes
+metric:
+  name: val_accuracy
+  goal: maximize
+
+early_terminate:
+  type: hyperband
+  min_iter: 5
+  max_iter: 20
+
+parameters:
+  embed_dim:
+    values: [128, 256]
+  hidden_dim:
+    values: [128, 256]
+  n_layers:
+    values: [2, 3]
+  cell_type:
+    values: ["GRU", "LSTM"]
+  dropout:
+    values: [0.1, 0.2, 0.3]
+
+command:
+  - ${env}
+  - ${interpreter}
+  - ${program}
+  - "--data_dir"
+  - "dakshina_dataset_v1.0"
+  - "--use_attention"
+  - ${args}
